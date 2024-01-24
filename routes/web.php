@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\Accounts\AccountController;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,17 +20,41 @@ use App\Http\Controllers\Accounts\AccountController;
 Route::prefix('auth')->name('auth.')->group(function (){
     Route::get('/',[AuthController::class,'login'])->name('login');
     Route::post('/',[AuthController::class,'saveLogin'])->name('login');
-    Route::get('/logup',[AuthController::class,'logup'])->name('logup');
-    Route::post('/logup',[AuthController::class,'saveLogup'])->name('logup');
-    Route::get('/authentic',[AuthController::class,'authentic'])->name('authentic');
-    Route::get('/changePassword',[AuthController::class,'changePassword'])->name('changePassword');
-    Route::post('/changePassword',[AuthController::class,'saveChangePassword'])->name('changePassword');
-    Route::post('/logout',[AuthController::class,'logout'])->name('logout');
-    Route::get('/forget',[AuthController::class,'forgot'])->name('forget');
-    Route::get('/search-email',[AuthController::class,'searchEmail'])->name('search-email');
-    Route::post('/sendMailRePass',[AuthController::class,'sendMailRePass'])->name('sendMailRePass');
+    Route::get('logup',[AuthController::class,'logup'])->name('logup');
+    Route::post('logup',[AuthController::class,'saveLogup'])->name('logup');
+    Route::get('authentic',[AuthController::class,'authentic'])->name('authentic');
+    Route::get('changePassword',[AuthController::class,'changePassword'])->name('changePassword');
+    Route::post('changePassword',[AuthController::class,'saveChangePassword'])->name('changePassword');
+    Route::post('logout',[AuthController::class,'logout'])->name('logout');
+    Route::get('forget',[AuthController::class,'forgot'])->name('forget');
+    Route::get('search-email',[AuthController::class,'searchEmail'])->name('search-email');
+    Route::post('sendMailRePass',[AuthController::class,'sendMailRePass'])->name('sendMailRePass');
+
+    Route::get('facebook', function () {
+        return Socialite::driver('facebook')->redirect();
+    })->name('facebook');
+
+    Route::get('facebook/callback', function () {
+        $user = Socialite::driver('facebook')->user();
+        dd($user);
+    })->name('facebook-callback');
+
+    Route::get('google', function () {
+        return Socialite::driver('google')->redirect();
+    })->name('google');
+
+    Route::get('google/callback', function () {
+        $user = Socialite::driver('facebook')->user();
+        dd($user);
+    })->name('google-callback');
 });
 
+Route::get('chinh-sach-rieng-tu',function (){
+     return "<h1>Chính sách quyền riêng tư</h1>";
+});
+Route::get('dieu-khoan-bao-mat',function (){
+     return "<h1>Điều khoản bảo mật</h1>";
+});
 
 Route::middleware('auth')->group(function (){
 
@@ -50,7 +75,8 @@ Route::middleware('auth')->group(function (){
     Route::prefix('/friend')->name('friend-')->group(function(){
         Route::get('/search',[FriendController::class,'search'])->name('search');
         Route::post('/loadData',[FriendController::class,'loadData'])->name('loadData');
-        Route::post('/add',[FriendController::class,'add'])->name('add');
+        Route::post('/add/{id}',[FriendController::class,'add'])->name('add');
+        Route::post('/select',[FriendController::class,'select'])->name('select');
     });
 
 });

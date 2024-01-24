@@ -38,7 +38,6 @@
        aria-haspopup="true" aria-expanded="false" data-bs-toggle="dropdown"><span
             class="dot-count bg-warning"></span><i class="feather-bell font-xl text-current"></i></a>
     <div class="dropdown-menu dropdown-menu-end p-4 rounded-3 border-0 shadow-lg" aria-labelledby="dropdownMenu3">
-
         <h4 class="fw-700 font-xss mb-4">Notification</h4>
         <div class="card bg-transparent-card w-100 border-0 ps-5 mb-3">
             <img src="{{asset('images/user-8.png')}}" alt="user" class="w40 position-absolute left-0">

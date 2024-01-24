@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{asset('assets/css/themify-icons.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/feather.css')}}">
     <!-- Favicon icon -->
@@ -79,11 +80,11 @@
 
                             <h6 class="mb-0 d-inline-block bg-white fw-600 font-xsss text-grey-500 mb-4">Or, Sign in
                                 with your social account </h6>
-                            <div class="form-group mb-1"><a href="#"
+                            <div class="form-group mb-1"><a href="{{route('auth.google')}}"
                                                             class="form-control text-left style2-input text-white fw-600 bg-facebook border-0 p-0 mb-2"><img
                                         src="{{asset('images/icon-1.png')}}" alt="icon" class="ms-2 w40 mb-1 me-5"> Sign
                                     in with Google</a></div>
-                            <div class="form-group mb-1"><a href="#" class="form-control text-left style2-input text-white fw-600 bg-twiiter border-0 p-0 "><img
+                            <div class="form-group mb-1"><a href="{{route('auth.facebook')}}" class="form-control text-left style2-input text-white fw-600 bg-twiiter border-0 p-0 "><img
                                         src="{{asset('images/icon-3.png')}}" alt="icon" class="ms-2 w40 mb-1 me-5"> Sign
                                     in with Facebook</a></div>
                         </div>
@@ -179,9 +180,11 @@
         </div>
     </div>
 </div>
-
 <script src="{{asset('assets/js/plugin.js')}}"></script>
 <script src="{{asset('assets/js/scripts.js')}}"></script>
+<script>
+    var userId = {{ auth()->user()->id ?? 0 }};
+</script>
 @stack('script')
 </body>
 </html>

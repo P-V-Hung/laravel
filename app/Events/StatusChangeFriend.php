@@ -7,31 +7,39 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class AddFriend implements ShouldBroadcast
+class StatusChangeFriend implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
-    public $message;
+    public $fromUser;
+    public $toUser;
+    public $status;
     /**
      * Create a new event instance.
      */
-    public function __construct(User $user,$message)
+    public function __construct($fromUser,$toUser,$status)
     {
-        $this->user = $user;
-        $this->message = $message;
+        $this->fromUser = $fromUser;
+        $this->toUser = $toUser;
+        $this->status = $status;
         $this->broadcastOn();
     }
 
-
     public function broadcastOn()
     {
-        Log::debug("{$this->user->name}: {$this->message}");
-        return new PresenceChannel('add-friend');
+        return new PrivateChannel('friend.change.'.$this->toUser->id);
+    }
+
+    public function broadcastWith(){
+        return [
+            'fromName' => $this->fromUser->name,
+            'status' => $this->status
+        ];
     }
 }
