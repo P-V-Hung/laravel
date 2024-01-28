@@ -23,4 +23,14 @@ Broadcast::channel('friend.change.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
+Broadcast::channel('friend.active.status.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});
+
+Broadcast::channel('friend.send.message.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});
+
+
+
 

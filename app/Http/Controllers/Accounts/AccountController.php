@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Accounts;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -14,12 +15,7 @@ class AccountController extends Controller
 {
     public function information(){
         $user = Auth::user();
-        if(!$user->image){
-            $user->image = "images/pt-1.jpg";
-        }else{
-            $user->image = 'storage/'.$user->image;
-
-        }
+        $user->image = 'storage/'.$user->image;
         $information = Information::where('user_id', auth()->user()->id)->first();
         return view('accounts.account-information',['user' => $user,'information' => $information]);
     }
@@ -66,7 +62,7 @@ class AccountController extends Controller
             $image = $request->file('image');
             $path = $image->store('uploads/images', 'public');
             $imagePath = Auth::user()->image;
-            if (!empty($imagePath) &&Storage::disk('public')->exists($imagePath)) {
+            if (($imagePath!=='uploads/images/avatar-user.png') &&Storage::disk('public')->exists($imagePath)) {
                 Storage::disk('public')->delete($imagePath);
             }
             Auth::user()->update(['image' => $path]);
@@ -95,15 +91,9 @@ class AccountController extends Controller
         return redirect(route('account-information'));
     }
 
-    public function authorProfile(){
-        $user = Auth::user();
-        $user = Auth::user();
-        if(!$user->image){
-            $user->image = asset('images/user-12.png');
-        }else{
-            $user->image = asset('storage/'.$user->image);
-
-        }
+    public function authorProfile($id = 0){
+        $user = User::find($id);
+        $user->image = asset('storage/'.$user->image);
         return view('accounts.profile',['user' => $user]);
     }
 }

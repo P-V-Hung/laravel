@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\FriendActiveStatus;
 use App\Events\StatusChangeFriend;
 use App\Events\SelectFriend;
 use App\Http\Controllers\Controller;
@@ -20,6 +21,11 @@ class FriendController extends Controller
         ]);
     }
 
+    public function listFriend($id){
+        return Friend::where(function($query) use ($id) {
+            $query->where('user1',$id)->orWhere('user2',$id);
+        })->where('status',1)->get();
+    }
     public function loadData(Request $request)
     {
         $keyword = $request->keyword;
@@ -67,4 +73,7 @@ class FriendController extends Controller
         return response()->json("success");
     }
 
+    public function message($id){
+        return view('friends.message',compact('id'));
+    }
 }

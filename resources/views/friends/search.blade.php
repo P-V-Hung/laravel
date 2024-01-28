@@ -63,7 +63,7 @@
                                 text = "Xác nhận";
                             } else if (item.status === 1) {
                                 className = "bg-danger";
-                                text = "Friend"
+                                text = `<a class="text-white" href='/friend/message/${item.id}'>Nhắn tin</a>`
                             } else if (item.status === 2){
                                 className = "delete-friend bg-dark"
                                 text = "Hủy";
@@ -77,7 +77,7 @@
                                                     class="float-right p-0 bg-white rounded-circle w-100 shadow-xss">
                                             </figure>
                                         <div class="clearfix"></div>
-                                        <h4 class="fw-700 font-xsss mt-3 mb-1">${item.name}</h4>
+                                        <h4 class="fw-700 font-xsss mt-3 mb-1"><a href="/account/profile/${item.id}}">${item.name}</a></h4>
                                         <p class="fw-500 font-xsssss text-grey-500 mt-0 mb-3">${item.email}</p>
                                         <button data-id="${item.id}"
                                            class="${className} mt-0 btn pt-2 pb-2 ps-3 pe-3 lh-24 ms-1 ls-3 d-inline-block rounded-xl font-xsssss fw-700 ls-lg text-white">${text}</button>
@@ -103,14 +103,14 @@
                 offset++;
                 loadUser(offset,limit);
             }
-        });
+        },{ passive: true });
         $(window).on("touchmove",function (){
             if($(window).height() + $(window).scrollTop() >= $(document).height()){
                 limit = 8;
                 offset++;
                 loadUser(offset,limit);
             }
-        });
+        },{ passive: true });
 
         $(document).on('click','.btn-add-friend',function (){
            let id = $(this).data('id');

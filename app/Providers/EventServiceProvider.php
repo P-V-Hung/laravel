@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\SendMail;
-use App\Events\StatusFriendChange;
-use App\Listeners\ChangeFriendNofication;
-use App\Listeners\SendMailNofify;
+use App\Events\FriendActiveStatus;
+use App\Listeners\ActiveStatusNotification;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -23,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        Login::class => [
+            ActiveStatusNotification::class,
         ]
     ];
 

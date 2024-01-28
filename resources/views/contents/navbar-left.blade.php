@@ -17,7 +17,7 @@
                     <li><a href="{{route('group')}}" class="nav-content-bttn open-font"><i
                                 class="feather-zap btn-round-md bg-mini-gradiant me-3"></i><span>Popular Groups</span></a>
                     </li>
-                    <li><a href="{{route('account-profile')}}" class="nav-content-bttn open-font"><i
+                    <li><a href="{{route('account-profile',['id' => auth()->user()->id])}}" class="nav-content-bttn open-font"><i
                                 class="feather-user btn-round-md bg-primary-gradiant me-3"></i><span>Author Profile </span></a>
                     </li>
                 </ul>

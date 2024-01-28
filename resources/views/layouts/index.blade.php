@@ -85,6 +85,7 @@
     @yield('main')
 <div id="log"></div>
 <script src="{{asset('assets/js/plugin.js')}}"></script>
+<script src="{{asset('assets/js/lightbox.js')}}"></script>
 <script src="{{asset('assets/js/countdown.js')}}"></script>
 <script src="{{asset('assets/js/scripts.js')}}"></script>
 <script>

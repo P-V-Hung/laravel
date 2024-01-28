@@ -1,10 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FriendController;
-use App\Http\Controllers\Accounts\AccountController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\StoryController;
+use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
 /*
@@ -69,14 +71,25 @@ Route::middleware('auth')->group(function (){
     Route::prefix('/account')->name('account-')->group(function(){
         Route::get('/',[AccountController::class,'information'])->name('information');
         Route::post('/',[AccountController::class,'saveInformation'])->name('information');
-        Route::get('/profile',[AccountController::class,'authorProfile'])->name('profile');
+        Route::get('/profile/{id}',[AccountController::class,'authorProfile'])->name('profile');
     });
 
-    Route::prefix('/friend')->name('friend-')->group(function(){
-        Route::get('/search',[FriendController::class,'search'])->name('search');
-        Route::post('/loadData',[FriendController::class,'loadData'])->name('loadData');
-        Route::post('/add/{id}',[FriendController::class,'add'])->name('add');
-        Route::post('/select',[FriendController::class,'select'])->name('select');
+    Route::prefix('friend')->name('friend-')->group(function(){
+        Route::get('search',[FriendController::class,'search'])->name('search');
+        Route::post('loadData',[FriendController::class,'loadData'])->name('loadData');
+        Route::post('add/{id}',[FriendController::class,'add'])->name('add');
+        Route::post('select',[FriendController::class,'select'])->name('select');
+        Route::get('message/{id}',[FriendController::class,'message'])->name('message');
     });
 
+    Route::prefix('post')->name('post.')->group(function(){
+       Route::get('index/{page}',[PostController::class,'index'])->name('index');
+       Route::post('store',[PostController::class,'store'])->name('store');
+       Route::get('show/{id}',[PostController::class,'show'])->name('show');
+    });
+
+    Route::prefix('story')->name('story.')->group(function (){
+       Route::get('/{id}',[StoryController::class,'index'])->name('index');
+       Route::post('/store',[StoryController::class,'store'])->name('store');
+    });
 });

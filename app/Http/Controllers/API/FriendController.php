@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\FriendActiveStatus;
 use App\Events\StatusChangeFriend;
 use App\Http\Controllers\Controller;
 use App\Models\Friend;
@@ -18,8 +19,19 @@ class FriendController extends Controller
      */
     public function select($id, $status = 0)
     {
-        $notFriends = Friend::where('user2', $id)->where('status', $status)->get();
-        $listUser = User::whereIn('id', $notFriends->pluck('user1'))->orderBy('created_at', 'desc')->get();
+        $id = (int)$id;
+        $notFriends = Friend::where(function ($query) use ($id){
+            $query->where('user2', $id)->orWhere('user1',$id);
+        })->where('status', $status)->get();
+        $listUser = [];
+        foreach($notFriends as $friend){
+            if($friend->user2 === $id){
+                $user = User::find($friend->user1);
+            }else if($friend->user1 === $id){
+                $user = User::find($friend->user2);
+            }
+            $listUser[] = $user;
+        }
         $data = [];
         foreach ($listUser as $user){
             $user->image = asset("storage/".$user->image);
@@ -30,8 +42,6 @@ class FriendController extends Controller
     }
     public function delete($user1 ,$user2)
     {
-        $user = User::find($user1);
-        $toUser = User::find($user2);
         $friend = Friend::where('user1',$user1)->where('user2',$user2)->first();
         Friend::destroy($friend->id);
         return response()->json("success");
