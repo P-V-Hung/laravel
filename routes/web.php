@@ -58,6 +58,8 @@ Route::get('dieu-khoan-bao-mat',function (){
      return "<h1>Điều khoản bảo mật</h1>";
 });
 
+Route::view('doc','layouts.doc');
+
 Route::middleware('auth')->group(function (){
 
 //    Home
@@ -66,6 +68,7 @@ Route::middleware('auth')->group(function (){
     Route::get('/settings', [HomeController::class,'settings'])->name('settings');
 
     Route::view('/sorry',"errors.#");
+
 
 
     Route::prefix('/account')->name('account-')->group(function(){

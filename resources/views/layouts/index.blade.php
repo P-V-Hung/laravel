@@ -88,41 +88,7 @@
 <script src="{{asset('assets/js/lightbox.js')}}"></script>
 <script src="{{asset('assets/js/countdown.js')}}"></script>
 <script src="{{asset('assets/js/scripts.js')}}"></script>
-<script>
-    $(document).ready(function () {
-        let url = window.location.href;
-        let links = $(".nav-header > a.route");
-        for (let i = 0; i < links.length; i++) {
-            if (links[i].href === url) {
-                let icon = $(links[i]).find('i');
-                let icons = $(links).find('i');
-                icons.removeClass("alert-primary").addClass("bg-greylight text-grey-500");
-                icon.removeClass("bg-greylight text-grey-500").addClass("alert-primary");
-            }
-        }
-    });
 
-    $(function () {
-        $('.timer').countdown('2021/6/31', function (event) {
-            var $this = $(this).html(event.strftime(''
-                // + '<span>%w</span> weeks '
-                + '<div class="time-count"><span class="text-time">%d</span> <span class="text-day">Day</span></div> '
-                + '<div class="time-count"><span class="text-time">%H</span> <span class="text-day">Hours</span> </div> '
-                + '<div class="time-count"><span class="text-time">%M</span> <span class="text-day">Min</span> </div> '
-                + '<div class="time-count"><span class="text-time">%S</span> <span class="text-day">Sec</span> </div> '));
-        });
-    });
-    function confirmFriend(id){
-        window.axios.post("{{route('api-friend-confirm',['user1' => '__id__','user2' => auth()->user()->id])}}".replace('__id__', id))
-    }
-
-    function deleteFriend(id){
-        window.axios.delete("{{route('api-friend-delete',['user1' => '__id__','user2' => auth()->user()->id])}}".replace('__id__', id))
-    }
-
-    var userId = {{ auth()->user()->id ?? 0}};
-
-</script>
 @stack('script')
 </body>
 </html>
